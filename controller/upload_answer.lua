@@ -47,8 +47,13 @@ for _, v in ipairs(question_list) do
     table.insert(item, v.topic)
     table.insert(history_question_and_answer, item)
 end
+
+local is_deep_base_history = 0
+if question_list[#question_list].topic == topic then
+    is_deep_base_history = 1
+end
 -- 调用gpt
-local ret, err, question_info = gpt_agent_proxy.gen_question(topic, history_question_and_answer, 1)
+local ret, err, question_info = gpt_agent_proxy.gen_question(topic, history_question_and_answer, is_deep_base_history)
 
 if ret ~= 0 then
     syncutil.exit_http(200, ret, err)
@@ -63,7 +68,7 @@ QuestionInfoDao.insert_question_info({
     question_id = new_question_id,
     question = question_info.interview_question,
     answer = '',
-    topic = question_info.current_topic,
+    topic = topic,
     evaluation = '',
 })
 

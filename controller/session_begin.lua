@@ -34,7 +34,7 @@ QuestionInfoDao.insert_question_info({
     question_id = question_id,
     question = question_info.interview_question,
     answer = '',
-    topic = question_info.current_topic,
+    topic = topic,
 
 })
 
