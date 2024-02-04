@@ -22,8 +22,8 @@ end
 local topic_index = math.random(1, #topic_list)
 local topic = topic_list[topic_index]
 -- 调用gpt
-local ret, err, question_info = gpt_agent_proxy.gen_question_stream(topic, {}, 0)
-nlog.info("question_info = " .. cjson.encode(question_info))
+local ret, err, interview_question = gpt_agent_proxy.gen_question_stream(topic, {}, 0)
+nlog.info("interview_question = " .. cjson.encode(interview_question))
 if ret ~= 0 then
     syncutil.exit_http(200, ret, err)
 end
@@ -32,7 +32,7 @@ local question_id = string_util.luuid()
 QuestionInfoDao.insert_question_info({
     session_id = session_id,
     question_id = question_id,
-    question = question_info.interview_question,
+    question = interview_question,
     answer = '',
     topic = topic,
 
@@ -40,10 +40,10 @@ QuestionInfoDao.insert_question_info({
 
 local data = {
     question_id = question_id,
-    current_topic = question_info.current_topic,
-    interview_question = question_info.interview_question,
+    current_topic = topic,
+    interview_question = interview_question,
 }
 
-ngx.print('\r\n')
+ngx.print('\r\n\r\n')
 ngx.print(cjson.encode(data))
 ngx.exit(200)
