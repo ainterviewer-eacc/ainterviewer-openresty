@@ -75,6 +75,13 @@ local function stream_response_from_subrequest(method, headers, url, request_bod
         return
     end
 
+    ngx.header.content_type = 'text/event-stream';
+    ngx.header.cache_control = 'no-cache';
+    ngx.header.connection = 'keep-alive';
+
+    -- 防止 Nginx 缓冲我们的响应并使其成为实时的
+    ngx.header['X-Accel-Buffering'] = 'no';
+
     -- 发送HTTP请求开始流式读取数据
     res, err = httpc:request({
         path = url,
@@ -88,8 +95,6 @@ local function stream_response_from_subrequest(method, headers, url, request_bod
         return -1, "failed to request: " ..  err
     end
     local status = res.status
-    nlog.error("reason: " ..  cjson.encode(res.reason))
-    nlog.error("status: " ..  cjson.encode(res.status))
 
     if tonumber(status) ~= ngx.HTTP_OK then
         nlog.error("failed status: " .. res.status)

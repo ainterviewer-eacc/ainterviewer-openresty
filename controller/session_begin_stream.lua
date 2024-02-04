@@ -38,12 +38,12 @@ QuestionInfoDao.insert_question_info({
 
 })
 
-local data = {
-    question_id = question_id,
-    current_topic = topic,
-    interview_question = interview_question,
-}
-
-ngx.print('\r\n\r\n')
-ngx.print(cjson.encode(data))
-ngx.exit(200)
+--local data = {
+--    question_id = question_id,
+--    current_topic = topic,
+--    interview_question = interview_question,
+--}
+--
+--ngx.print('\r\n\r\n')
+--ngx.print(cjson.encode(data))
+--ngx.exit(200)
