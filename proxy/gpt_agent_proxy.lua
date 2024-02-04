@@ -77,7 +77,6 @@ local function stream_response_from_subrequest(method, headers, url, request_bod
 
     ngx.header.content_type = 'text/event-stream';
     ngx.header.cache_control = 'no-cache';
-    ngx.header.connection = 'keep-alive';
 
     -- 防止 Nginx 缓冲我们的响应并使其成为实时的
     ngx.header['X-Accel-Buffering'] = 'no';
